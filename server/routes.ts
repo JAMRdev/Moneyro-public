@@ -7,9 +7,16 @@ import {
   fixedMonthlyExpenses,
   expenseGroups,
   budgets,
-  logs
+  logs,
+  insertCategorySchema,
+  insertTransactionSchema,
+  insertFixedMonthlyExpenseSchema,
+  insertBudgetSchema
 } from "@shared/schema";
 import { eq, desc } from "drizzle-orm";
+
+// Simple session management
+const sessions = new Map<string, string>();
 
 export async function registerRoutes(app: Express): Promise<Server> {
   
@@ -65,8 +72,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         sessionId,
         user: { id: userId, email: "demo@example.com" }
       });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+    } catch (error: any) {
+      res.status(500).json({ error: error?.message || "Auth error" });
     }
   });
 
