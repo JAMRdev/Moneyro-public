@@ -6,6 +6,7 @@ import { es } from 'date-fns/locale';
 import { toast } from 'sonner';
 import { useEffect } from 'react';
 import { logActivity } from '@/lib/logger';
+import { useAuth } from './useAuth';
 
 const fetchExpenses = async (month: Date): Promise<FixedMonthlyExpense[]> => {
   const { data: { session } } = await supabase.auth.getSession();
@@ -28,6 +29,7 @@ const fetchExpenses = async (month: Date): Promise<FixedMonthlyExpense[]> => {
 
 export const useFixedExpenses = (currentMonth: Date) => {
     const queryClient = useQueryClient();
+    const { session, loading } = useAuth();
     const monthKey = format(currentMonth, 'yyyy-MM');
 
     useEffect(() => {

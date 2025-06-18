@@ -2,14 +2,17 @@
 export interface Transaction {
   id: string;
   transaction_date: string;
-  description: string;
+  description: string | null;
   amount: number;
   type: 'ingreso' | 'egreso' | 'ahorro';
   categories: {
     id: string;
     name: string;
-  };
-  category_id?: string;
+  } | null;
+  category_id?: string | null;
+  user_id: string;
+  created_at: string;
+  date?: string;
 }
 
 export interface Category {
