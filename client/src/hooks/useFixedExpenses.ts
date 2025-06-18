@@ -53,6 +53,7 @@ export const useFixedExpenses = (currentMonth: Date) => {
     const { data: expenses = [], isLoading } = useQuery({
         queryKey: ['fixedMonthlyExpenses', monthKey],
         queryFn: () => fetchExpenses(currentMonth),
+        enabled: !!session && !loading,
     });
 
     const mutationOptions = {
