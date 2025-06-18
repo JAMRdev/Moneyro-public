@@ -4,8 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { supabase } from "./integrations/supabase/client";
-import type { Session } from "@supabase/supabase-js";
+import { initializeDatabase, authAPI } from "./lib/api";
 
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
@@ -40,7 +39,7 @@ const queryClient = new QueryClient({
 });
 
 const App = () => {
-  const [session, setSession] = useState<Session | null>(null);
+  const [session, setSession] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [authError, setAuthError] = useState<string | null>(null);
 
@@ -51,19 +50,18 @@ const App = () => {
       try {
         console.log("🔄 Inicializando autenticación...");
         
-        const { data: { session }, error } = await supabase.auth.getSession();
+        // Initialize database with default categories
+        await initializeDatabase();
         
-        if (error) {
-          console.error("❌ Error obteniendo sesión:", error);
-          setAuthError(error.message);
-        } else {
-          console.log("✅ Sesión obtenida:", session ? "Activa" : "No activa");
-          if (mounted) {
-            setSession(session);
-            setAuthError(null);
-          }
+        // Create a demo session for now
+        const sessionData = await authAPI.login();
+        
+        if (mounted) {
+          setSession(sessionData);
+          setAuthError(null);
+          console.log("✅ Sesión demo creada");
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error("❌ Error inesperado en inicialización:", error);
         if (mounted) {
           setAuthError("Error de conexión. Verifica tu conexión a internet.");
@@ -77,25 +75,8 @@ const App = () => {
 
     initializeAuth();
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log("🔄 Cambio de estado de auth:", event);
-      
-      if (mounted) {
-        setSession(session);
-        setAuthError(null);
-        
-        if (event === 'TOKEN_REFRESHED' && !session) {
-          console.log("🔄 Reintentando conexión...");
-          setTimeout(initializeAuth, 1000);
-        }
-      }
-    });
-
     return () => {
       mounted = false;
-      subscription.unsubscribe();
     };
   }, []);
 
