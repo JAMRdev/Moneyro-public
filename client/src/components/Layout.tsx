@@ -89,7 +89,7 @@ export default function Layout() {
         </ErrorBoundary>
         
         {/* Contenido principal con Suspense y Error Boundary */}
-        <main className="container py-8">
+        <main className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
           <ErrorBoundary
             fallback={
               <div className="text-center py-12 space-y-4">

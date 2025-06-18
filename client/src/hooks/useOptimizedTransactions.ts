@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Transaction } from '@/types';
 import { TransactionFiltersState } from './useTransactions';
+import { useAuth } from './useAuth';
 
 /**
  * Hook optimizado para cargar transacciones con filtros aplicados en el servidor
@@ -20,6 +21,8 @@ import { TransactionFiltersState } from './useTransactions';
  * @returns Query result con transacciones filtradas
  */
 export const useOptimizedTransactions = (filters: TransactionFiltersState) => {
+  const { session, loading } = useAuth();
+  
   return useQuery({
     queryKey: ['transactions', 'optimized', filters],
     queryFn: async (): Promise<Transaction[]> => {
