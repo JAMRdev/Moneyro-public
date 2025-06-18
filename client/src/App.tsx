@@ -4,7 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { initializeDatabase, authAPI } from "./lib/api";
+import { supabase } from "@/integrations/supabase/client";
 
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
@@ -50,16 +50,17 @@ const App = () => {
       try {
         console.log("🔄 Inicializando autenticación...");
         
-        // Initialize database with default categories
-        await initializeDatabase();
+        // Get initial session from Supabase
+        const { data: { session }, error } = await supabase.auth.getSession();
         
-        // Create a demo session for now
-        const sessionData = await authAPI.login();
+        if (error) {
+          console.error("Error getting session:", error);
+        }
         
         if (mounted) {
-          setSession(sessionData);
+          setSession(session);
           setAuthError(null);
-          console.log("✅ Sesión demo creada");
+          console.log("✅ Autenticación de Supabase inicializada");
         }
       } catch (error: any) {
         console.error("❌ Error inesperado en inicialización:", error);
@@ -75,8 +76,16 @@ const App = () => {
 
     initializeAuth();
 
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (mounted) {
+        setSession(session);
+      }
+    });
+
     return () => {
       mounted = false;
+      subscription.unsubscribe();
     };
   }, []);
 
