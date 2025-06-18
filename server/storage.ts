@@ -1,29 +1,12 @@
-import { 
-  type User, 
-  type InsertUser
-} from "@shared/schema";
-
+// Simple storage interface - not used with Supabase client-side implementation
 export interface IStorage {
-  getUser(id: string): Promise<User | undefined>;
-  getUserByEmail(email: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
+  // This storage interface is maintained for compatibility but not used
+  // All data operations are handled by Supabase client-side
 }
 
-export class DatabaseStorage implements IStorage {
-  async getUser(id: string): Promise<User | undefined> {
-    // TODO: Implement database queries
-    return undefined;
-  }
-
-  async getUserByEmail(email: string): Promise<User | undefined> {
-    // TODO: Implement database queries
-    return undefined;
-  }
-
-  async createUser(user: InsertUser): Promise<User> {
-    // TODO: Implement database queries
-    throw new Error("Not implemented");
-  }
+// Minimal storage implementation for server compatibility
+export class MinimalStorage implements IStorage {
+  // All operations are handled by Supabase client
 }
 
-export const storage = new DatabaseStorage();
+export const storage = new MinimalStorage();
