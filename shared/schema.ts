@@ -47,12 +47,17 @@ export type FixedMonthlyExpense = {
   expense_group_id?: string;
   name: string;
   amount: number;
-  description?: string;
-  due_date: number;
+  notes?: string;
+  due_date: string;
   payment_source?: string;
-  is_paid: boolean;
+  paid: boolean;
   month: string;
   created_at: string;
+  updated_at: string;
+  expense_groups?: {
+    id: string;
+    name: string;
+  };
 };
 
 export type Budget = {
@@ -119,10 +124,10 @@ export const insertFixedMonthlyExpenseSchema = z.object({
   expense_group_id: z.string().uuid().optional(),
   name: z.string().min(1),
   amount: z.number().positive(),
-  description: z.string().optional(),
-  due_date: z.number().min(1).max(31),
+  notes: z.string().optional(),
+  due_date: z.string().optional(),
   payment_source: z.string().optional(),
-  is_paid: z.boolean().default(false),
+  paid: z.boolean().default(false),
   month: z.string(),
 });
 

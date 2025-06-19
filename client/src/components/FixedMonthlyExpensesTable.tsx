@@ -82,7 +82,7 @@ export default function FixedMonthlyExpensesTable({ currentMonth, setMonthString
    * Hook principal para gestión de gastos fijos
    * Proporciona: datos, mutaciones, estados de carga
    */
-  const { expenses, isLoading, updateExpenseMutation, addExpense, deleteExpense, duplicateMonth, isDuplicating } = useFixedExpenses(currentMonth);
+  const { expenses, isLoading, error, updateExpenseMutation, addExpense, deleteExpense, duplicateMonth, isDuplicating } = useFixedExpenses(currentMonth);
   
   // Hook para obtener grupos de gastos (categorías)
   const { groups: expenseGroups } = useExpenseGroups();
@@ -147,6 +147,33 @@ export default function FixedMonthlyExpensesTable({ currentMonth, setMonthString
           {/* Skeletons para las filas de la tabla */}
           <div className="space-y-3">
             {[...Array(5)].map((_, i) => <Skeleton key={i} className="h-16 w-full rounded-lg md:h-12" />)}
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  // Estado de error - mostrar mensaje de error
+  if (error) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Error al cargar gastos fijos</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-center py-8">
+            <p className="text-muted-foreground mb-4">
+              No se pudieron cargar los gastos fijos para este mes.
+            </p>
+            <p className="text-sm text-red-600 mb-4">
+              {error?.message || 'Error desconocido'}
+            </p>
+            <Button 
+              onClick={() => window.location.reload()}
+              variant="outline"
+            >
+              Reintentar
+            </Button>
           </div>
         </CardContent>
       </Card>

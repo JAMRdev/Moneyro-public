@@ -16,12 +16,19 @@ const fetchExpenses = async (month: Date): Promise<FixedMonthlyExpense[]> => {
 
   const { data, error } = await supabase
     .from('fixed_monthly_expenses')
-    .select('*, expense_groups(id, name)')
+    .select(`
+      *,
+      expense_groups (
+        id,
+        name
+      )
+    `)
     .eq('month', monthStart)
+    .eq('user_id', session.user.id)
     .order('created_at', { ascending: true });
 
   if (error) {
-    toast.error("Error al cargar los gastos", { description: error.message });
+    console.error("Error fetching fixed expenses:", error);
     throw new Error(error.message);
   }
   return (data || []) as FixedMonthlyExpense[];
@@ -50,10 +57,13 @@ export const useFixedExpenses = (currentMonth: Date) => {
         };
       }, [queryClient]);
 
-    const { data: expenses = [], isLoading } = useQuery({
+    const { data: expenses = [], isLoading, error } = useQuery({
         queryKey: ['fixedMonthlyExpenses', monthKey],
         queryFn: () => fetchExpenses(currentMonth),
         enabled: !!session && !loading,
+        retry: 3,
+        retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000),
+        refetchOnMount: true,
     });
 
     const mutationOptions = {
@@ -191,5 +201,5 @@ export const useFixedExpenses = (currentMonth: Date) => {
         }
     });
 
-    return { expenses, isLoading, updateExpenseMutation, addExpense, deleteExpense, duplicateMonth, isDuplicating };
+    return { expenses, isLoading, error, updateExpenseMutation, addExpense, deleteExpense, duplicateMonth, isDuplicating };
 }
