@@ -7,6 +7,7 @@ import { format, parse, addMonths } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useMoneyVisibility } from '@/contexts/MoneyVisibilityContext';
 
 type MonthlyBalanceChartProps = {
   transactions: Transaction[] | undefined;
@@ -35,7 +36,13 @@ const chartConfig = {
 };
 
 export function MonthlyBalanceChart({ transactions, projections, onProjectionsChange }: MonthlyBalanceChartProps) {
+  const { isMoneyVisible } = useMoneyVisibility();
   const numberOfMonthsToProject = 6;
+  
+  const formatCurrency = (value: number) => {
+    if (!isMoneyVisible) return "****";
+    return currencyFormatter.format(value);
+  };
 
   const { chartData, futureMonths } = useMemo(() => {
     const monthlySummary = transactions?.reduce((acc, t) => {
@@ -125,7 +132,7 @@ export function MonthlyBalanceChart({ transactions, projections, onProjectionsCh
               }}
             />
             <YAxis
-              tickFormatter={(value) => currencyFormatter.format(value as number).split(',')[0]}
+              tickFormatter={(value) => formatCurrency(value as number).split(',')[0]}
             />
             <Tooltip
               content={
@@ -148,7 +155,7 @@ export function MonthlyBalanceChart({ transactions, projections, onProjectionsCh
                           <span className="text-muted-foreground">{itemConfig.label}</span>
                         </div>
                         <span className="font-mono font-medium tabular-nums text-foreground">
-                          {currencyFormatter.format(value as number)}
+                          {formatCurrency(value as number)}
                         </span>
                       </div>
                     )

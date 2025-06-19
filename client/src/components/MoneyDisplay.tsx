@@ -26,7 +26,7 @@ export const MoneyDisplay: React.FC<MoneyDisplayProps> = ({
   if (!isMoneyVisible) {
     return (
       <span className={className}>
-        {prefix}***{suffix}
+        {prefix}****{suffix}
       </span>
     );
   }

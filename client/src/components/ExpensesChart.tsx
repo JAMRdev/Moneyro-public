@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/chart"
 import { Transaction } from "@/types"
 import { PieChartIcon } from "lucide-react"
+import { useMoneyVisibility } from "@/contexts/MoneyVisibilityContext"
 
 /**
  * Props para el componente ExpensesChart
@@ -53,6 +54,8 @@ type ExpensesChartProps = {
  * @param transactions - Array de transacciones a procesar
  */
 const ExpensesChart = ({ transactions }: ExpensesChartProps) => {
+  const { isMoneyVisible } = useMoneyVisibility();
+  
   /**
    * Formatea números como moneda argentina (ARS)
    * Utiliza la API de Internacionalización para formateo consistente
@@ -61,6 +64,7 @@ const ExpensesChart = ({ transactions }: ExpensesChartProps) => {
    * @returns String formateado como "$X.XXX,XX ARS"
    */
   const formatCurrency = (amount: number) => {
+    if (!isMoneyVisible) return "****";
     return new Intl.NumberFormat("es-AR", {
       style: "currency",
       currency: "ARS",

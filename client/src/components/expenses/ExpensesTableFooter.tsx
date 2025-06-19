@@ -3,6 +3,7 @@ import { FC } from 'react';
 import { Button } from '@/components/ui/button';
 import { TableRow, TableCell, TableFooter as ShadcnTableFooter } from '@/components/ui/table';
 import { PlusCircle } from 'lucide-react';
+import { MoneyDisplay } from '@/components/MoneyDisplay';
 
 interface ExpensesTableFooterProps {
     addExpense: () => void;
@@ -34,18 +35,18 @@ export const ExpensesTableFooter: FC<ExpensesTableFooterProps> = ({
                     Total gastos mes:
                   </TableCell>
                   <TableCell className="text-right font-bold text-base align-middle">
-                    {currencyFormatter.format(totalAmount)}
+                    <MoneyDisplay amount={totalAmount} prefix="$" />
                   </TableCell>
                   <TableCell colSpan={4} className={`text-right font-bold text-base align-middle ${unpaidAmountColor}`}>
-                    Falta pagar: {currencyFormatter.format(unpaidAmount)}
+                    Falta pagar: <MoneyDisplay amount={unpaidAmount} prefix="$" />
                   </TableCell>
                 </TableRow>
             </ShadcnTableFooter>
             <div className="mt-4 flex flex-col gap-4 md:hidden">
                 <Button onClick={() => addExpense()} disabled={isLocked} className="w-full"><PlusCircle className="mr-2 h-4 w-4" /> Añadir Gasto</Button>
                 <div className="text-center font-bold text-base">
-                    <div>Total gastos mes: {currencyFormatter.format(totalAmount)}</div>
-                    <div className={unpaidAmountColor}>Falta pagar: {currencyFormatter.format(unpaidAmount)}</div>
+                    <div>Total gastos mes: <MoneyDisplay amount={totalAmount} prefix="$" /></div>
+                    <div className={unpaidAmountColor}>Falta pagar: <MoneyDisplay amount={unpaidAmount} prefix="$" /></div>
                 </div>
             </div>
         </>

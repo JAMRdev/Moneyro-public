@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
+import { MoneyDisplay } from '@/components/MoneyDisplay';
 
 export const EditableCell: FC<{
   expense: FixedMonthlyExpense;
@@ -79,7 +80,7 @@ export const EditableCell: FC<{
     }
     return (
       <div onClick={() => !isLocked && setIsEditing(true)} className={cn("flex h-8 w-full items-center justify-end text-right", !isLocked && "cursor-pointer")}>
-        {currencyFormatter.format(Number(value) || 0)}
+        <MoneyDisplay amount={Number(value) || 0} prefix="$" />
       </div>
     );
   }

@@ -6,6 +6,7 @@ import { Transaction } from '@/types';
 import { useMemo } from 'react';
 import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { useMoneyVisibility } from '@/contexts/MoneyVisibilityContext';
 
 type ExpenseTrendChartProps = {
   transactions: Transaction[] | undefined;
@@ -17,6 +18,13 @@ const currencyFormatter = new Intl.NumberFormat('es-AR', {
 });
 
 export function ExpenseTrendChart({ transactions }: ExpenseTrendChartProps) {
+  const { isMoneyVisible } = useMoneyVisibility();
+  
+  const formatCurrency = (value: number) => {
+    if (!isMoneyVisible) return "****";
+    return currencyFormatter.format(value);
+  };
+
   const chartData = useMemo(() => {
     if (!transactions) {
       return [];
@@ -87,7 +95,7 @@ export function ExpenseTrendChart({ transactions }: ExpenseTrendChartProps) {
               tickMargin={8}
             />
             <YAxis
-              tickFormatter={(value) => currencyFormatter.format(value as number)}
+              tickFormatter={(value) => formatCurrency(value as number)}
               tickLine={false}
               axisLine={false}
               tickMargin={8}
@@ -96,7 +104,7 @@ export function ExpenseTrendChart({ transactions }: ExpenseTrendChartProps) {
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent
-                formatter={(value) => currencyFormatter.format(value as number)}
+                formatter={(value) => formatCurrency(value as number)}
               />}
             />
             <Legend />

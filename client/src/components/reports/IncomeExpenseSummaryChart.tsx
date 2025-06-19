@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { Transaction } from '@/types';
 import { useMemo } from 'react';
+import { useMoneyVisibility } from '@/contexts/MoneyVisibilityContext';
 
 type IncomeExpenseSummaryChartProps = {
   transactions: Transaction[] | undefined;
@@ -14,6 +15,13 @@ const currencyFormatter = new Intl.NumberFormat('es-AR', {
 });
 
 export function IncomeExpenseSummaryChart({ transactions }: IncomeExpenseSummaryChartProps) {
+  const { isMoneyVisible } = useMoneyVisibility();
+  
+  const formatCurrency = (value: number) => {
+    if (!isMoneyVisible) return "****";
+    return currencyFormatter.format(value);
+  };
+
   const summary = useMemo(() => {
     if (!transactions) {
       return { income: 0, expense: 0 };
@@ -64,8 +72,8 @@ export function IncomeExpenseSummaryChart({ transactions }: IncomeExpenseSummary
               tickMargin={10}
               axisLine={false}
             />
-            <YAxis tickFormatter={(value) => currencyFormatter.format(value as number)} />
-            <ChartTooltip content={<ChartTooltipContent formatter={(value) => currencyFormatter.format(value as number)} />} />
+            <YAxis tickFormatter={(value) => formatCurrency(value as number)} />
+            <ChartTooltip content={<ChartTooltipContent formatter={(value) => formatCurrency(value as number)} />} />
             <Legend />
             <Bar dataKey="ingresos" fill="var(--color-ingresos)" radius={4} />
             <Bar dataKey="egresos" fill="var(--color-egresos)" radius={4} />

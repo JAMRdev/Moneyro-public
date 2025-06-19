@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Transaction } from "@/types";
 import { useMemo } from "react";
 import { ArrowDownCircle, ArrowUpCircle, Banknote } from "lucide-react";
+import { MoneyDisplay } from "@/components/MoneyDisplay";
 
 type ReportSummaryCardsProps = {
   transactions: Transaction[] | undefined;
@@ -41,7 +42,7 @@ export function ReportSummaryCards({ transactions }: ReportSummaryCardsProps) {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold text-green-500">
-            {currencyFormatter.format(summary.income)}
+            <MoneyDisplay amount={summary.income} prefix="$" />
           </div>
         </CardContent>
       </Card>
@@ -52,7 +53,7 @@ export function ReportSummaryCards({ transactions }: ReportSummaryCardsProps) {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold text-red-500">
-            {currencyFormatter.format(summary.expense)}
+            <MoneyDisplay amount={summary.expense} prefix="$" />
           </div>
         </CardContent>
       </Card>
@@ -63,7 +64,7 @@ export function ReportSummaryCards({ transactions }: ReportSummaryCardsProps) {
         </CardHeader>
         <CardContent>
           <div className={`text-2xl font-bold ${summary.balance >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-            {currencyFormatter.format(summary.balance)}
+            <MoneyDisplay amount={summary.balance} prefix="$" />
           </div>
         </CardContent>
       </Card>

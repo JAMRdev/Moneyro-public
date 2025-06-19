@@ -2,6 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DollarSign, CreditCard, Wallet } from "lucide-react";
 import { Transaction } from "@/types";
+import { MoneyDisplay } from "@/components/MoneyDisplay";
 
 /**
  * Props para el componente SummaryCards
@@ -73,7 +74,9 @@ const SummaryCards = ({ transactions }: SummaryCardsProps) => {
         </CardHeader>
         <CardContent>
           {/* Monto en verde para indicar valor positivo */}
-          <div className="text-2xl font-bold text-green-500">{formatCurrency(summary.income)}</div>
+          <div className="text-2xl font-bold text-green-500">
+            <MoneyDisplay amount={summary.income} prefix="$" />
+          </div>
         </CardContent>
       </Card>
 
@@ -86,7 +89,9 @@ const SummaryCards = ({ transactions }: SummaryCardsProps) => {
         </CardHeader>
         <CardContent>
           {/* Monto en rojo para indicar gastos */}
-          <div className="text-2xl font-bold text-red-500">{formatCurrency(summary.expenses)}</div>
+          <div className="text-2xl font-bold text-red-500">
+            <MoneyDisplay amount={summary.expenses} prefix="$" />
+          </div>
         </CardContent>
       </Card>
 
@@ -99,7 +104,9 @@ const SummaryCards = ({ transactions }: SummaryCardsProps) => {
         </CardHeader>
         <CardContent>
           {/* Balance sin color específico - puede ser positivo o negativo */}
-          <div className="text-2xl font-bold">{formatCurrency(balance)}</div>
+          <div className="text-2xl font-bold">
+            <MoneyDisplay amount={balance} prefix="$" />
+          </div>
         </CardContent>
       </Card>
     </div>
