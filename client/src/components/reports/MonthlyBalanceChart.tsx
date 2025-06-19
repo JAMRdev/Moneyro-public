@@ -15,11 +15,6 @@ type MonthlyBalanceChartProps = {
   onProjectionsChange: (projections: Record<string, { income: number; expense: number }>) => void;
 };
 
-const currencyFormatter = new Intl.NumberFormat('es-AR', {
-  style: 'currency',
-  currency: 'ARS',
-});
-
 const chartConfig = {
   ingresos: {
     label: "Ingresos",
@@ -41,7 +36,10 @@ export function MonthlyBalanceChart({ transactions, projections, onProjectionsCh
   
   const formatCurrency = (value: number) => {
     if (!isMoneyVisible) return "****";
-    return currencyFormatter.format(value);
+    return new Intl.NumberFormat('es-AR', {
+      style: 'currency',
+      currency: 'ARS',
+    }).format(value);
   };
 
   const { chartData, futureMonths } = useMemo(() => {

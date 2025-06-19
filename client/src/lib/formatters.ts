@@ -6,6 +6,8 @@
  * de manera consistente en toda la aplicación.
  */
 
+import { useMoneyVisibility } from '@/contexts/MoneyVisibilityContext';
+
 /**
  * Formatea un número como moneda argentina (ARS)
  * 

@@ -13,6 +13,7 @@ import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { Transaction } from "@/types";
 import { TransactionActions } from "./TransactionActions";
+import { MoneyDisplay } from "@/components/MoneyDisplay";
 
 interface TransactionTableProps {
   transactions: Transaction[];
@@ -73,7 +74,7 @@ export const TransactionTable = ({ transactions, onEdit, onDelete }: Transaction
                 </Badge>
               </TableCell>
               <TableCell className={`text-right font-medium ${transaction.type === 'ingreso' ? 'text-green-500' : 'text-red-500'}`}>
-                {formatCurrency(transaction.amount)}
+                <MoneyDisplay amount={transaction.amount} prefix="$" />
               </TableCell>
               <TableCell className="text-right">
                 {!transaction.id.startsWith('fixed-') && (

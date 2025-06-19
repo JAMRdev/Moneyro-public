@@ -7,7 +7,6 @@ type FixedExpensesContextType = {
   updateExpenseMutation: UseMutationResult<void, Error, Partial<FixedMonthlyExpense> & { id: string; }, unknown>;
   deleteExpense: (id: string) => void;
   isLocked: boolean;
-  currencyFormatter: Intl.NumberFormat;
 };
 
 const FixedExpensesContext = createContext<FixedExpensesContextType | undefined>(undefined);

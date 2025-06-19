@@ -19,60 +19,75 @@ export const useAuth = () => {
 
   useEffect(() => {
     const fetchSessionAndProfile = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setSession(session);
-      const currentUser = session?.user ?? null;
-      setUser(currentUser);
-
-      if (currentUser) {
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', currentUser.id)
-          .single();
-        
-        if (error) {
-          console.error("Error fetching profile:", error);
-        } else if (data) {
-          const profileData = { ...data, avatar_url: currentUser.user_metadata.avatar_url };
-          setProfile(profileData as Profile);
-        }
-      }
-      setLoading(false);
-    };
-
-    fetchSessionAndProfile();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-        if (_event === 'SIGNED_IN' && !session?.user.user_metadata.is_reauthenticated) {
-          logActivity({
-            action: 'Inicio de Sesión',
-            location: 'Auth',
-          });
-        }
+      try {
+        setLoading(true);
+        const { data: { session } } = await supabase.auth.getSession();
         setSession(session);
         const currentUser = session?.user ?? null;
         setUser(currentUser);
-        
+
         if (currentUser) {
-           const { data, error } = await supabase
+          const { data, error } = await supabase
             .from('profiles')
             .select('*')
             .eq('id', currentUser.id)
             .single();
           
           if (error) {
-            console.error("Error fetching profile on auth change:", error);
+            console.error("Error fetching profile:", error);
             setProfile(null);
           } else if (data) {
-             const profileData = { ...data, avatar_url: currentUser.user_metadata.avatar_url };
-             setProfile(profileData as Profile);
+            const profileData = { ...data, avatar_url: currentUser.user_metadata.avatar_url };
+            setProfile(profileData as Profile);
           }
         } else {
           setProfile(null);
         }
+      } catch (error) {
+        console.error("Auth initialization error:", error);
+      } finally {
         setLoading(false);
+      }
+    };
+
+    fetchSessionAndProfile();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (_event, session) => {
+        try {
+          if (_event === 'SIGNED_IN' && !session?.user.user_metadata.is_reauthenticated) {
+            logActivity({
+              action: 'Inicio de Sesión',
+              location: 'Auth',
+            });
+          }
+          
+          setSession(session);
+          const currentUser = session?.user ?? null;
+          setUser(currentUser);
+          
+          if (currentUser) {
+            const { data, error } = await supabase
+              .from('profiles')
+              .select('*')
+              .eq('id', currentUser.id)
+              .single();
+            
+            if (error) {
+              console.error("Error fetching profile on auth change:", error);
+              setProfile(null);
+            } else if (data) {
+              const profileData = { ...data, avatar_url: currentUser.user_metadata.avatar_url };
+              setProfile(profileData as Profile);
+            }
+          } else {
+            setProfile(null);
+          }
+        } catch (error) {
+          console.error("Auth state change error:", error);
+        } finally {
+          setLoading(false);
+        }
       }
     );
 

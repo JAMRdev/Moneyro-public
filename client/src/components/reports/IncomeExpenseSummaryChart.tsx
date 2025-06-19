@@ -9,17 +9,15 @@ type IncomeExpenseSummaryChartProps = {
   transactions: Transaction[] | undefined;
 };
 
-const currencyFormatter = new Intl.NumberFormat('es-AR', {
-  style: 'currency',
-  currency: 'ARS',
-});
-
 export function IncomeExpenseSummaryChart({ transactions }: IncomeExpenseSummaryChartProps) {
   const { isMoneyVisible } = useMoneyVisibility();
   
   const formatCurrency = (value: number) => {
     if (!isMoneyVisible) return "****";
-    return currencyFormatter.format(value);
+    return new Intl.NumberFormat('es-AR', {
+      style: 'currency',
+      currency: 'ARS',
+    }).format(value);
   };
 
   const summary = useMemo(() => {

@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Pencil, Trash2 } from "lucide-react";
 import { Budget } from "@/types/budget";
+import { MoneyDisplay } from "@/components/MoneyDisplay";
 
 interface BudgetCardProps {
   budget: Budget;
@@ -66,8 +67,8 @@ export const BudgetCard = ({ budget, spent, percentage, onEdit, onDelete }: Budg
       <CardContent>
         <div className="space-y-3">
           <div className="flex justify-between text-sm">
-            <span>Gastado: ${spent.toFixed(2)}</span>
-            <span>Presupuesto: ${budget.amount.toFixed(2)}</span>
+            <span>Gastado: <MoneyDisplay amount={spent} prefix="$" /></span>
+            <span>Presupuesto: <MoneyDisplay amount={budget.amount} prefix="$" /></span>
           </div>
           
           <Progress 
@@ -78,11 +79,11 @@ export const BudgetCard = ({ budget, spent, percentage, onEdit, onDelete }: Budg
           <div className="text-center">
             {isOverBudget ? (
               <span className="text-red-600 font-medium">
-                Excedido por ${(spent - budget.amount).toFixed(2)}
+                Excedido por <MoneyDisplay amount={spent - budget.amount} prefix="$" />
               </span>
             ) : (
               <span className="text-green-600 font-medium">
-                Restante: ${remaining.toFixed(2)}
+                Restante: <MoneyDisplay amount={remaining} prefix="$" />
               </span>
             )}
           </div>

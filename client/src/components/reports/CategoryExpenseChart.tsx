@@ -4,19 +4,25 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Transaction } from '@/types';
 import { useMemo } from 'react';
+import { useMoneyVisibility } from "@/contexts/MoneyVisibilityContext";
 
 type CategoryExpenseChartProps = {
   transactions: Transaction[] | undefined;
 };
 
-const currencyFormatter = new Intl.NumberFormat('es-AR', {
-  style: 'currency',
-  currency: 'ARS',
-});
-
 const COLORS = [ "#8884d8", "#82ca9d", "#ffc658", "#ff8042", "#a4de6c", "#d0ed57", "#ff7300", "#0088FE", "#00C49F", "#FFBB28" ];
 
 export function CategoryExpenseChart({ transactions }: CategoryExpenseChartProps) {
+  const { isMoneyVisible } = useMoneyVisibility();
+  
+  const formatCurrency = (amount: number) => {
+    if (!isMoneyVisible) return "****";
+    return new Intl.NumberFormat('es-AR', {
+      style: 'currency',
+      currency: 'ARS',
+    }).format(amount);
+  };
+
   const { chartData, chartConfig } = useMemo(() => {
     if (!transactions) {
       return { chartData: [], chartConfig: {} };
@@ -82,7 +88,7 @@ export function CategoryExpenseChart({ transactions }: CategoryExpenseChartProps
               cursor={false}
               content={
                 <ChartTooltipContent
-                  formatter={(value) => currencyFormatter.format(value as number)}
+                  formatter={(value) => formatCurrency(value as number)}
                   nameKey="key"
                 />
               }

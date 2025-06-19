@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { Transaction } from "@/types";
 import { TransactionActions } from "./TransactionActions";
+import { MoneyDisplay } from "@/components/MoneyDisplay";
 
 interface TransactionItemProps {
   transaction: Transaction;
@@ -41,7 +42,7 @@ export const TransactionItem = ({ transaction, index, onEdit, onDelete }: Transa
           </p>
         </div>
         <p className={`font-medium text-right ml-2 ${transaction.type === 'ingreso' ? 'text-green-500' : 'text-red-500'}`}>
-          {formatCurrency(transaction.amount)}
+          <MoneyDisplay amount={transaction.amount} prefix="$" />
         </p>
       </div>
       <div className="flex justify-between items-center text-sm text-muted-foreground">
