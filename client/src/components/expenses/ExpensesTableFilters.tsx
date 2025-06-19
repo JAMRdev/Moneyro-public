@@ -2,7 +2,7 @@
 import { FC } from 'react';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ExpenseGroup } from '@/types';
+import { ExpenseGroup } from '@shared/schema';
 
 export interface FixedExpensesFiltersState {
   groupId: string;

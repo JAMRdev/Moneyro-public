@@ -2,7 +2,7 @@
 import { FC, useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { FixedMonthlyExpense } from '@/types';
+import { FixedMonthlyExpense } from '@shared/schema';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'sonner';
@@ -12,7 +12,7 @@ import { MoneyDisplay } from '@/components/MoneyDisplay';
 export const EditableCell: FC<{
   expense: FixedMonthlyExpense;
   field: keyof FixedMonthlyExpense;
-  value: string | number | null | boolean;
+  value: string | number | undefined | boolean;
   currencyFormatter?: Intl.NumberFormat;
   isLocked: boolean;
 }> = ({ expense, field, value, currencyFormatter, isLocked }) => {

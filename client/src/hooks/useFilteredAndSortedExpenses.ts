@@ -1,7 +1,7 @@
 
 import { useMemo } from 'react';
 import { parse } from 'date-fns';
-import { FixedMonthlyExpense } from '@/types';
+import { FixedMonthlyExpense } from '@shared/schema';
 import { FixedExpensesFiltersState } from '@/components/expenses/ExpensesTableFilters';
 
 export type SortableKeys = keyof FixedMonthlyExpense | 'group';

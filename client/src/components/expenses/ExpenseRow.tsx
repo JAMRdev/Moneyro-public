@@ -1,6 +1,6 @@
 
 import { FC, useState, useMemo } from 'react';
-import { FixedMonthlyExpense, ExpenseGroup } from '@/types';
+import { FixedMonthlyExpense, ExpenseGroup } from '@shared/schema';
 import { format, parse } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -33,9 +33,10 @@ export const ExpenseRow: FC<ExpenseRowProps> = ({
     } = useFixedExpensesContext();
 
     const selectedDate = useMemo(() => {
-        if (!expense.due_date) return undefined;
+        const dueDateValue = expense.due_date || undefined;
+        if (!dueDateValue) return undefined;
         try {
-            return parse(expense.due_date, 'dd/MM/yyyy', new Date());
+            return parse(dueDateValue, 'dd/MM/yyyy', new Date());
         } catch {
             return undefined;
         }
@@ -58,7 +59,7 @@ export const ExpenseRow: FC<ExpenseRowProps> = ({
                     <CollapsibleTrigger className="flex w-full items-center justify-between p-4 text-left md:hidden">
                         <div className="flex-1 min-w-0">
                             <p className="font-semibold truncate">{expense.name}</p>
-                            <p className="text-sm text-muted-foreground">{currencyFormatter.format(expense.amount || 0)}</p>
+                            <p className="text-sm text-muted-foreground">{currencyFormatter?.format(expense.amount || 0) || `$${expense.amount || 0}`}</p>
                         </div>
                         <ChevronDown className="h-4 w-4 ml-2 shrink-0 transition-transform duration-200 data-[state=open]:rotate-180" />
                     </CollapsibleTrigger>
@@ -68,7 +69,7 @@ export const ExpenseRow: FC<ExpenseRowProps> = ({
                                 <label className="text-sm font-medium text-muted-foreground md:hidden">Grupo</label>
                                 <Select
                                     value={expense.expense_group_id || ''}
-                                    onValueChange={(value) => updateExpenseMutation.mutate({ id: expense.id, expense_group_id: value })}
+                                    onValueChange={(value) => updateExpenseMutation.mutate({ id: expense.id, expense_group_id: value || undefined })}
                                     disabled={isLocked}
                                 >
                                     <SelectTrigger className="w-full border-none bg-transparent p-0 focus:ring-0 focus:ring-offset-0 h-8 text-left md:w-auto md:max-w-[160px] truncate">
@@ -104,7 +105,7 @@ export const ExpenseRow: FC<ExpenseRowProps> = ({
                                     <Calendar
                                         mode="single"
                                         selected={selectedDate}
-                                        onSelect={(date) => updateExpenseMutation.mutate({ id: expense.id, due_date: date ? format(date, 'dd/MM/yyyy') : null })}
+                                        onSelect={(date) => updateExpenseMutation.mutate({ id: expense.id, due_date: date ? format(date, 'dd/MM/yyyy') : undefined })}
                                         initialFocus
                                     />
                                     </PopoverContent>

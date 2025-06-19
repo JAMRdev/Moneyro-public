@@ -1,6 +1,6 @@
 
 import { useMemo } from 'react';
-import { FixedMonthlyExpense } from '@/types';
+import { FixedMonthlyExpense } from '@shared/schema';
 
 export const useExpenseCalculations = (expenses: FixedMonthlyExpense[]) => {
   const totalAmount = useMemo(() => {

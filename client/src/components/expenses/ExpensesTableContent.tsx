@@ -4,7 +4,7 @@ import { Table, TableBody, TableHeader, TableRow, TableHead, TableCell } from '@
 import { ExpenseRow } from './ExpenseRow';
 import { ExpensesTableFooter } from './ExpensesTableFooter';
 import { SortableTableHeader } from './SortableTableHeader';
-import { FixedMonthlyExpense, ExpenseGroup } from '@/types';
+import { FixedMonthlyExpense, ExpenseGroup } from '@shared/schema';
 import { SortableKeys, SortConfig } from '@/hooks/useFilteredAndSortedExpenses';
 
 interface ExpensesTableContentProps {

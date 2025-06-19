@@ -119,6 +119,16 @@ export default function FixedMonthlyExpensesTable({ currentMonth, setMonthString
   };
 
   /**
+   * Formateador de moneda argentino
+   */
+  const currencyFormatter = new Intl.NumberFormat('es-AR', {
+    style: 'currency',
+    currency: 'ARS',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
+
+  /**
    * Valor del contexto que se comparte con componentes hijos
    * Incluye mutaciones, estado de bloqueo y utilidades
    */
@@ -126,6 +136,7 @@ export default function FixedMonthlyExpensesTable({ currentMonth, setMonthString
     updateExpenseMutation,
     deleteExpense,
     isLocked,
+    currencyFormatter,
   };
 
   // Estado de carga - mostrar skeletons

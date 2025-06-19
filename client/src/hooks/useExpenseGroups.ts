@@ -1,7 +1,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { ExpenseGroup } from '@/types';
+import { ExpenseGroup } from '@shared/schema';
 import { toast } from 'sonner';
 import { useEffect } from 'react';
 
