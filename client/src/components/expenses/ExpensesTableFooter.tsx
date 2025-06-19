@@ -11,7 +11,6 @@ interface ExpensesTableFooterProps {
     totalAmount: number;
     unpaidAmount: number;
     unpaidAmountColor: string;
-    currencyFormatter: Intl.NumberFormat;
 }
 
 export const ExpensesTableFooter: FC<ExpensesTableFooterProps> = ({
@@ -19,8 +18,7 @@ export const ExpensesTableFooter: FC<ExpensesTableFooterProps> = ({
     isLocked,
     totalAmount,
     unpaidAmount,
-    unpaidAmountColor,
-    currencyFormatter
+    unpaidAmountColor
 }) => {
     return (
         <>

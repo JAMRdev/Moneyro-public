@@ -15,7 +15,6 @@ interface ExpensesTableContentProps {
   totalAmount: number;
   unpaidAmount: number;
   unpaidAmountColor: string;
-  currencyFormatter: Intl.NumberFormat;
   sortConfig: SortConfig | null;
   requestSort: (key: SortableKeys) => void;
 }
@@ -28,7 +27,6 @@ export const ExpensesTableContent: FC<ExpensesTableContentProps> = ({
   totalAmount,
   unpaidAmount,
   unpaidAmountColor,
-  currencyFormatter,
   sortConfig,
   requestSort
 }) => {
@@ -71,7 +69,6 @@ export const ExpensesTableContent: FC<ExpensesTableContentProps> = ({
           totalAmount={totalAmount}
           unpaidAmount={unpaidAmount}
           unpaidAmountColor={unpaidAmountColor}
-          currencyFormatter={currencyFormatter}
       />
     </Table>
   );

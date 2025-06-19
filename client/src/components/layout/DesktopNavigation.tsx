@@ -6,9 +6,12 @@ import { MoneyToggle } from "@/components/MoneyToggle";
 import { UserDropdown } from "./UserDropdown";
 import { DialogTrigger } from "@/components/ui/dialog";
 import { Home, BarChart2, PlusCircle, Wallet } from "lucide-react";
+import { ConnectionStatus } from "@/components/dashboard/ConnectionStatus";
+import { useOfflineSync } from "@/hooks/useOfflineSync";
 
 export const DesktopNavigation = () => {
   const { pathname } = useLocation();
+  const { isOnline, pendingActions } = useOfflineSync();
 
   return (
     <nav className="hidden md:flex items-center space-x-4">
@@ -24,6 +27,7 @@ export const DesktopNavigation = () => {
       <DialogTrigger asChild>
         <Button><PlusCircle className="mr-2 h-4 w-4" />Añadir Transacción</Button>
       </DialogTrigger>
+      <ConnectionStatus isOnline={isOnline} pendingActions={pendingActions} />
       <MoneyToggle />
       <ThemeToggle />
       <UserDropdown />

@@ -134,13 +134,7 @@ const Index = () => {
 
   return (
     <div className="space-y-4 md:space-y-8">
-      <ErrorBoundary fallback={
-        <div className="text-center py-4">
-          <p className="text-sm text-muted-foreground">Error cargando header</p>
-        </div>
-      }>
-        <DashboardHeader isOnline={isOnline} pendingActions={pendingActions} />
-      </ErrorBoundary>
+
 
       <ErrorBoundary fallback={
         <div className="text-center py-4">

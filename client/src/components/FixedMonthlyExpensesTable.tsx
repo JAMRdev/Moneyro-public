@@ -199,7 +199,7 @@ export default function FixedMonthlyExpensesTable({ currentMonth, setMonthString
                 totalAmount={totalAmount}
                 unpaidAmount={unpaidAmount}
                 unpaidAmountColor={unpaidAmountColor}
-                currencyFormatter={currencyFormatter}
+
                 sortConfig={sortConfig}
                 requestSort={requestSort}
               />

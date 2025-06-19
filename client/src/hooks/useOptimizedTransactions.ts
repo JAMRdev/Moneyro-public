@@ -65,7 +65,9 @@ export const useOptimizedTransactions = (filters: TransactionFiltersState) => {
     staleTime: 30 * 1000, // Datos considerados frescos por 30 segundos
     gcTime: 5 * 60 * 1000, // Mantener en cache por 5 minutos
     refetchOnWindowFocus: false, // No refetch al cambiar ventana
-    refetchOnMount: false, // No refetch al montar componente si hay cache válido
+    refetchOnMount: true, // Refetch al montar para asegurar datos frescos
     enabled: !!session && !loading, // Solo ejecutar si hay sesión válida
+    retry: 3, // Reintentar hasta 3 veces en caso de error
+    retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000), // Backoff exponencial
   });
 };

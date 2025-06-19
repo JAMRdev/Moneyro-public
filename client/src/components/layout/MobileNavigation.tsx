@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { MoneyToggle } from "@/components/MoneyToggle";
 import { DialogTrigger } from "@/components/ui/dialog";
+import { ConnectionStatus } from "@/components/dashboard/ConnectionStatus";
+import { useOfflineSync } from "@/hooks/useOfflineSync";
 import {
   Sheet,
   SheetContent,
@@ -40,6 +42,7 @@ export const MobileNavigation = ({
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { isAdmin } = useAuth();
+  const { isOnline, pendingActions } = useOfflineSync();
 
   const handleLogout = async () => {
     await logActivity({
@@ -115,6 +118,10 @@ export const MobileNavigation = ({
             <div className="flex items-center justify-between w-full px-4 py-2">
               <span className="text-sm font-medium">Mostrar Dinero</span>
               <MoneyToggle />
+            </div>
+
+            <div className="px-4 py-2">
+              <ConnectionStatus isOnline={isOnline} pendingActions={pendingActions} />
             </div>
 
             <Button onClick={handleLogout} variant="outline" className="w-full justify-start">
