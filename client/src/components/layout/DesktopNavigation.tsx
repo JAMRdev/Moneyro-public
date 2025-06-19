@@ -2,6 +2,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { MoneyToggle } from "@/components/MoneyToggle";
 import { UserDropdown } from "./UserDropdown";
 import { DialogTrigger } from "@/components/ui/dialog";
 import { Home, BarChart2, PlusCircle, Wallet } from "lucide-react";
@@ -23,6 +24,7 @@ export const DesktopNavigation = () => {
       <DialogTrigger asChild>
         <Button><PlusCircle className="mr-2 h-4 w-4" />Añadir Transacción</Button>
       </DialogTrigger>
+      <MoneyToggle />
       <ThemeToggle />
       <UserDropdown />
     </nav>

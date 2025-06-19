@@ -2,6 +2,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { MoneyToggle } from "@/components/MoneyToggle";
 import { DialogTrigger } from "@/components/ui/dialog";
 import {
   Sheet,
@@ -109,6 +110,11 @@ export const MobileNavigation = ({
             <div className="flex items-center justify-between w-full px-4 py-2">
               <span className="text-sm font-medium">Tema</span>
               <ThemeToggle />
+            </div>
+
+            <div className="flex items-center justify-between w-full px-4 py-2">
+              <span className="text-sm font-medium">Mostrar Dinero</span>
+              <MoneyToggle />
             </div>
 
             <Button onClick={handleLogout} variant="outline" className="w-full justify-start">

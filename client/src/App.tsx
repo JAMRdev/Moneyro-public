@@ -11,6 +11,7 @@ import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import Layout from "./components/Layout";
 import { ThemeProvider } from "./components/ThemeProvider";
+import { MoneyVisibilityProvider } from "./contexts/MoneyVisibilityContext";
 import Categories from "./pages/Categories";
 import Logs from "./pages/Logs";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -123,10 +124,11 @@ const App = () => {
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-          <Toaster />
-          <Sonner />
-          
-          <BrowserRouter>
+          <MoneyVisibilityProvider>
+            <Toaster />
+            <Sonner />
+            
+            <BrowserRouter>
             <Routes>
               {session ? (
                 <>
@@ -158,7 +160,8 @@ const App = () => {
                 <PushNotificationsManager />
               </ErrorBoundary>
             )}
-          </BrowserRouter>
+            </BrowserRouter>
+          </MoneyVisibilityProvider>
         </ThemeProvider>
       </QueryClientProvider>
     </ErrorBoundary>
